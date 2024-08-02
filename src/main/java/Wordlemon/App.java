@@ -1,15 +1,19 @@
 package Wordlemon;
 
 
+import Panels.GamePanel;
+import Panels.WelcomePanel;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class App {
+public class App extends JFrame {
     private static List<Pokemon> pokedex = new ArrayList<Pokemon>();
 
     private static void createDex(File[] files) {
@@ -33,7 +37,40 @@ public class App {
         File[] files = directory.listFiles();
         createDex(files);
     }
-    App(){};
+    private Pokemon activeGuess;
+
+    private Font appFont;
+    private CardLayout cLayout;
+    private JPanel appPanel;
+
+
+    App(){
+
+        this.setTitle("Wordlemon");
+        this.setSize(500,500);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+
+
+
+        cLayout = new CardLayout();
+        appPanel = new JPanel(cLayout);
+
+        wordleGuess();
+        WelcomePanel welcomePage = new WelcomePanel(this);
+        GamePanel gamePage = new GamePanel(this);
+        appPanel.add(welcomePage,"welcomeCard");
+        appPanel.add(gamePage,"gameCard");
+
+        this.add(appPanel);
+
+        this.setVisible(true);
+    };
+
+    public void switchCard(String sceneKey){
+        cLayout.show(appPanel,sceneKey);
+    }
     public int dexSize(){
         return pokedex.size();
     }
@@ -43,4 +80,12 @@ public class App {
             ,poke.getHeight(),poke.getWeight());
         }
     }
+    public void wordleGuess(){
+        int guessId = (int)(Math.random() * pokedex.size());
+        activeGuess = pokedex.get(guessId);
+    }
+    public Pokemon getGuess(){
+        return activeGuess;
+    }
+
 }
