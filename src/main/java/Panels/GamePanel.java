@@ -5,8 +5,6 @@ import Wordlemon.Pokemon;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GamePanel extends JPanel {
 
@@ -26,6 +24,8 @@ public class GamePanel extends JPanel {
     JLabel guessGeneration,guessType1,guessType2,guessHeight,guessWeight;
     JLabel generationTitle,type1Title,type2Title,heightTitle,weightTitle;
     ImageIcon correctIcon,wrongIcon,foundIcon,higherIcon,lowerIcon;
+    JPanel buttonsPanel = new JPanel(new GridBagLayout());
+    JButton submitButton, restartButton, exitButton;
     //GameConsole
     JPanel botPanel = new JPanel();
 
@@ -44,7 +44,6 @@ public class GamePanel extends JPanel {
         this.add(botPanel,BorderLayout.SOUTH);
         //Top panel
         topPanel.setBackground(Color.CYAN);
-        midPanel.setBackground(Color.WHITE);
         botPanel.setBackground(Color.GREEN);
         guessPanel.setBackground(Color.RED);
 
@@ -76,6 +75,8 @@ public class GamePanel extends JPanel {
         midPanel.add(guessType2);
         midPanel.add(guessWeight);
         midPanel.add(guessHeight);
+
+        midPanel.add(buttonsPanel);
 
     }
     private ImageIcon getPokemonIcon(String name){
@@ -133,5 +134,37 @@ public class GamePanel extends JPanel {
         guessHeight.setIcon(lowerIcon);
         guessHeight.setVerticalTextPosition(JLabel.BOTTOM);
         guessHeight.setHorizontalTextPosition(JLabel.CENTER);
+
+        submitButton = new JButton("Guess");
+        submitButton.setPreferredSize(new Dimension(100,100));
+
+        submitButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        submitButton.setForeground(Color.white);
+        submitButton.setBackground(new Color(0x55bb99));
+        submitButton.setFocusable(false);
+
+
+        restartButton = new JButton("Reset");
+        restartButton.setPreferredSize(new Dimension(100,100));
+        restartButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        restartButton.setForeground(Color.white);
+        restartButton.setBackground(Color.darkGray);
+        restartButton.setFocusable(false);
+
+        exitButton = new JButton("Exit");
+        exitButton.setPreferredSize(new Dimension(100,100));
+        exitButton.setBackground(new Color(0x490000));
+        exitButton.setFocusable(false);
+        exitButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        exitButton.setForeground(Color.white);
+
+
+
+        buttonsPanel.setPreferredSize(new Dimension(500,150));
+        buttonsPanel.add(exitButton);
+        buttonsPanel.add(Box.createHorizontalStrut(30));
+        buttonsPanel.add(submitButton);
+        buttonsPanel.add(Box.createHorizontalStrut(30));
+        buttonsPanel.add(restartButton);
     }
 }
