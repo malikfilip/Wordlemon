@@ -31,6 +31,10 @@ public class App extends JFrame {
             }
         }
     }
+
+    public static List<Pokemon> getPokedex(){
+        return pokedex;
+    }
     static {
         //Get all Json names in array files[]
         File directory = new File("src/main/resources/pokeinfo");
@@ -87,5 +91,6 @@ public class App extends JFrame {
     public Pokemon getGuess(){
         return activeGuess;
     }
+
 
 }

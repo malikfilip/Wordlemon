@@ -1,5 +1,7 @@
 package Panels;
 
+import Utils.Guess;
+import Utils.Submit;
 import Wordlemon.App;
 import Wordlemon.Pokemon;
 
@@ -8,17 +10,20 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Objects;
 
 public class GamePanel extends JPanel {
 
-    Pokemon guess;
-    ImageIcon guessIcon;
-    int turn = 0;
-
+    private Pokemon guess;
+    private ImageIcon guessIcon;
+    private Submit submitGuess;
+    private int turn = 0;
+    private String consoleText;
     //Game header
     JPanel topPanel = new JPanel(new GridLayout(1,2));
     JPanel turnPanel = new JPanel(new GridBagLayout());
     JLabel turnLabel = new JLabel();
+    JLabel pokemonPicture = new JLabel();
     JPanel guessPanel = new JPanel(new GridBagLayout());
     JLabel guessLabel = new JLabel();
 
@@ -40,6 +45,7 @@ public class GamePanel extends JPanel {
     public GamePanel(App parentApp){
 
         guess = parentApp.getGuess();
+        submitGuess = new Submit();
         guessIcon = getPokemonIcon(guess.getName());
 
         //GUI
@@ -62,7 +68,8 @@ public class GamePanel extends JPanel {
         guessLabel.setText(guess.getName());
         guessLabel.setFont(new Font("Drip October",Font.PLAIN,15));
         guessPanel.add(guessLabel);
-        guessPanel.add(new JLabel(guessIcon));
+        pokemonPicture.setIcon( guessIcon);
+        guessPanel.add(pokemonPicture);
 
         topPanel.add(turnPanel);
         topPanel.add(guessPanel);
@@ -127,23 +134,23 @@ public class GamePanel extends JPanel {
         guessWeight = new JLabel("CLICK");
         guessHeight = new JLabel("CLICK");
 
-        guessGeneration.setIcon(wrongIcon);
+        guessGeneration.setIcon(correctIcon);
         guessGeneration.setVerticalTextPosition(JLabel.BOTTOM);
         guessGeneration.setHorizontalTextPosition(JLabel.CENTER);
 
-        guessType1.setIcon(wrongIcon);
+        guessType1.setIcon(correctIcon);
         guessType1.setVerticalTextPosition(JLabel.BOTTOM);
         guessType1.setHorizontalTextPosition(JLabel.CENTER);
 
-        guessType2.setIcon(wrongIcon);
+        guessType2.setIcon(correctIcon);
         guessType2.setVerticalTextPosition(JLabel.BOTTOM);
         guessType2.setHorizontalTextPosition(JLabel.CENTER);
 
-        guessWeight.setIcon(wrongIcon);
+        guessWeight.setIcon(correctIcon);
         guessWeight.setVerticalTextPosition(JLabel.BOTTOM);
         guessWeight.setHorizontalTextPosition(JLabel.CENTER);
 
-        guessHeight.setIcon(wrongIcon);
+        guessHeight.setIcon(correctIcon);
         guessHeight.setVerticalTextPosition(JLabel.BOTTOM);
         guessHeight.setHorizontalTextPosition(JLabel.CENTER);
 
@@ -185,13 +192,17 @@ public class GamePanel extends JPanel {
         console = new JTextArea();
         console.setBackground(Color.BLACK);
         console.setForeground(Color.GREEN);
+        console.setEditable(false);
 
         scroll = new JScrollPane(console);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        //Console's newest text should be shown at the bottom of the console
-        scroll.getVerticalScrollBar().setValue(scroll.getVerticalScrollBar().getMaximum());
+        //scroll.getVerticalScrollBar().setValue(scroll.getVerticalScrollBar().getMaximum());
+        writeToConsole(guess);
+
 
         consolePane.add("Console",scroll);
+
+
 
     }
 
@@ -318,21 +329,37 @@ public class GamePanel extends JPanel {
 
     private void changeIconCorrectWrong(JLabel label){
         switch (label.getText()){
-            case "CLICK","Wrong":
+            case "Wrong":
                 label.setIcon(correctIcon);
                 label.setText("Correct");
                 break;
-            case "Correct":
+            case "Correct","CLICK":
                 label.setIcon(wrongIcon);
                 label.setText("Wrong");
                 break;
         }
     }
 
-    public void createButtonActions(App parentApp){
+    private void createButtonActions(App parentApp){
         submitButton.addActionListener(al->{
-            System.out.println("Generation " + guessGeneration.getText() + " Type 1 " + guessType1.getText() + " Type 2 " + guessType2.getText()
-                    +" Weight " + guessWeight.getText() + " Height " + guessHeight.getText());
+            /*System.out.println("Generation " + guessGeneration.getText() + " Type 1 " + guessType1.getText() + " Type 2 " + guessType2.getText()
+               +" Weight " + guessWeight.getText() + " Height " + guessHeight.getText());*/
+            if(stringToEnum(guessGeneration.getText()) != Guess.FOUND)submitGuess.evaluateGeneration(guess.getGeneration(),stringToEnum(guessGeneration.getText()));
+            if(stringToEnum(guessType1.getText()) != Guess.FOUND)submitGuess.evaluateType1(guess.getType1(),stringToEnum(guessType1.getText()));
+            if(stringToEnum(guessType2.getText()) != Guess.FOUND)submitGuess.evaluateType2(guess.getType2(),stringToEnum(guessType2.getText()));
+            if(stringToEnum(guessWeight.getText()) != Guess.FOUND)submitGuess.evaluateWeight(guess.getWeight(),stringToEnum(guessWeight.getText()));
+            if(stringToEnum(guessHeight.getText()) != Guess.FOUND)submitGuess.evaluateHeight(guess.getHeight(),stringToEnum(guessHeight.getText()));
+            guess = submitGuess.getRandomPokemon();
+            turn++;
+            updateGame();
+            console.append("\n");
+            writeToConsole(guess);
+
+            System.out.println(submitGuess.progress() + "possible guesses");
+
+
+
+
         });
         exitButton.addActionListener(al->{
             System.exit(0);
@@ -340,6 +367,84 @@ public class GamePanel extends JPanel {
         restartButton.addActionListener(al->{
             parentApp.switchCard("welcomeCard");
         });
+    }
+    private void writeToConsole (Pokemon refPokemon){
+        console.append("Turn " + turn);
+        console.append(" - " + refPokemon.getName() + " [ " + refPokemon.getDexNo() + " ]" + "\nWeight : "+refPokemon.getWeight()
+                + " kg\nHeight : " + refPokemon.getHeight() + " m\nTYPING : " + refPokemon.getType1() +" - " + ((Objects.equals(refPokemon.getType2(), "")) ? "NONE" : refPokemon.getType2()));
+        //Console's newest text should be shown at the bottom of the console
+        console.setCaretPosition(console.getDocument().getLength());
+
+    }
+
+    private Guess stringToEnum(String text){
+        return switch (text) {
+            case "Correct", "CLICK" -> Guess.CORRECT;
+            case "Wrong" -> Guess.WRONG;
+            case "Higher" -> Guess.HIGHER;
+            case "Lower" -> Guess.LOWER;
+            default -> Guess.FOUND;
+        };
+    }
+    private void updateGame(){
+        int mask = submitGuess.getMask();
+        if((mask & 0b10000) != 0){
+            //if correct answer was found
+            guessGeneration.setIcon(foundIcon);
+            guessGeneration.setText(String.valueOf(submitGuess.getCorrectGeneration()));
+            guessGeneration.setForeground(Color.GREEN);
+        }
+        else{
+            guessGeneration.setIcon(correctIcon);
+            guessGeneration.setText("CLICK");
+        }
+        if((mask & 0b01000) != 0){
+            //if correct answer was found
+            guessType1.setIcon(foundIcon);
+            guessType1.setText(submitGuess.getCorrectType1());
+            guessType1.setForeground(Color.GREEN);
+        }
+        else{
+            guessType1.setIcon(correctIcon);
+            guessType1.setText("CLICK");
+        }
+        if((mask & 0b00100) != 0){
+            //if correct answer was found
+            guessType2.setIcon(foundIcon);
+            guessType2.setText(submitGuess.getCorrectType2());
+            guessType2.setForeground(Color.GREEN);
+        }
+        else{
+            guessType2.setIcon(correctIcon);
+            guessType2.setText("CLICK");
+        }
+        if((mask & 0b00010) != 0){
+            //if correct answer was found
+            guessWeight.setIcon(foundIcon);
+            guessWeight.setText(String.valueOf(submitGuess.getCorrectWeight()));
+            guessWeight.setForeground(Color.GREEN);
+        }
+        else{
+            guessWeight.setIcon(correctIcon);
+            guessWeight.setText("CLICK");
+        }
+        if((mask & 0b00001) != 0){
+            //if correct answer was found
+            guessHeight.setIcon(foundIcon);
+            guessHeight.setText(String.valueOf(submitGuess.getCorrectHeight()));
+            guessHeight.setForeground(Color.GREEN);
+        }
+        else{
+            guessHeight.setIcon(correctIcon);
+            guessHeight.setText("CLICK");
+        }
+
+        turnLabel.setText("Turn " + turn);
+        guessLabel.setText(guess.getName());
+
+
+        pokemonPicture.setIcon(getPokemonIcon(guess.getName()));
+
     }
 
 }
