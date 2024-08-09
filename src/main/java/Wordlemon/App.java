@@ -2,6 +2,7 @@ package Wordlemon;
 
 
 import Panels.GamePanel;
+import Panels.GuessPanel;
 import Panels.WelcomePanel;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,6 +48,9 @@ public class App extends JFrame {
     private CardLayout cLayout;
     private JPanel appPanel;
 
+    private GamePanel gamePage;
+    private WelcomePanel welcomePage;
+    private GuessPanel guessPage;
 
     App(){
 
@@ -62,10 +66,12 @@ public class App extends JFrame {
         appPanel = new JPanel(cLayout);
 
         wordleGuess();
-        WelcomePanel welcomePage = new WelcomePanel(this);
-        GamePanel gamePage = new GamePanel(this);
+        welcomePage = new WelcomePanel(this);
+        gamePage = new GamePanel(this);
+        guessPage = new GuessPanel(this);
         appPanel.add(welcomePage,"welcomeCard");
         appPanel.add(gamePage,"gameCard");
+        appPanel.add(guessPage,"guessCard");
 
         this.add(appPanel);
 
@@ -78,6 +84,10 @@ public class App extends JFrame {
     public int dexSize(){
         return pokedex.size();
     }
+
+    public void dexSet(List<Pokemon> newDex){
+        pokedex = newDex;
+    }
     public void dexPrint(){
         for(Pokemon poke : pokedex){
             System.out.printf("Pokemon %d, %s[%s - %s] - Generation %d - H = %.2f m, W = %.2f kg\n",poke.getDexNo(),poke.getName(),poke.getType1(),poke.getType2(),poke.getGeneration()
@@ -85,11 +95,19 @@ public class App extends JFrame {
         }
     }
     public void wordleGuess(){
+        if(pokedex.isEmpty()){
+            System.out.println("No pokemon matches that criteria");
+            System.exit(-1);
+        }
         int guessId = (int)(Math.random() * pokedex.size());
         activeGuess = pokedex.get(guessId);
     }
     public Pokemon getGuess(){
         return activeGuess;
+    }
+
+    public void gameUpdateWrapper (){
+        gamePage.updateGame(activeGuess);
     }
 
 

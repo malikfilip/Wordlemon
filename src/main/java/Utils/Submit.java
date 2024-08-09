@@ -52,7 +52,7 @@ public class Submit {
             case CORRECT:
                 guessMask |= 0b00100;
                 correctType2 = (!Objects.equals(guessedType2, "")) ? guessedType2 : "NONE";
-                guessList.removeIf(mon -> !Objects.equals(mon.getType2(), guessedType2));
+                guessList.removeIf(mon -> (!Objects.equals(mon.getType2(), guessedType2)));
                 break;
             case WRONG:
                 guessList.removeIf(mon -> Objects.equals(mon.getType2(), guessedType2));
@@ -90,10 +90,17 @@ public class Submit {
                 break;
         }
     }
-    public Pokemon getRandomPokemon(){
-        if(guessList.isEmpty()) System.out.println("That pokemon does not exist in the pokedex.");System.exit(-1);
+    /*public Pokemon getRandomPokemon(){
+        if(guessList.isEmpty()) {
+            System.out.println("That pokemon does not exist in the pokedex.");
+            System.exit(-1);
+        }
         int guessId = (int)(Math.random() * guessList.size());
         return guessList.get(guessId);
+    }*/
+
+    public List<Pokemon> getDex (){
+        return this.guessList;
     }
 
     public int progress(){

@@ -9,8 +9,6 @@ import java.awt.event.ActionListener;
 
 public class WelcomePanel extends JPanel {
 
-
-
    public WelcomePanel(App parentApp){
        this.setBackground(Color.PINK);
 

@@ -8,6 +8,8 @@ import Wordlemon.Pokemon;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Objects;
@@ -79,14 +81,14 @@ public class GamePanel extends JPanel {
         midPanel.add(generationTitle);
         midPanel.add(type1Title);
         midPanel.add(type2Title);
-        midPanel.add(weightTitle);
         midPanel.add(heightTitle);
+        midPanel.add(weightTitle);
 
         midPanel.add(guessGeneration);
         midPanel.add(guessType1);
         midPanel.add(guessType2);
-        midPanel.add(guessWeight);
         midPanel.add(guessHeight);
+        midPanel.add(guessWeight);
 
         midPanel.add(buttonsPanel);
 
@@ -97,9 +99,10 @@ public class GamePanel extends JPanel {
         createIconActions();
         createButtonActions(parentApp);
 
+
     }
     private ImageIcon getPokemonIcon(String name){
-        System.out.println("src/main/resources/pokeicons/" + name.toUpperCase() + ".png");
+        //System.out.println("src/main/resources/pokeicons/" + name.toUpperCase() + ".png");
         ImageIcon bigIcon = new ImageIcon("src/main/resources/pokeicons/" + name.toUpperCase() + ".png");
         Image content = bigIcon.getImage();
         Image scaledImage = content.getScaledInstance(64,64,Image.SCALE_SMOOTH);
@@ -342,6 +345,7 @@ public class GamePanel extends JPanel {
 
     private void createButtonActions(App parentApp){
         submitButton.addActionListener(al->{
+
             /*System.out.println("Generation " + guessGeneration.getText() + " Type 1 " + guessType1.getText() + " Type 2 " + guessType2.getText()
                +" Weight " + guessWeight.getText() + " Height " + guessHeight.getText());*/
             if(stringToEnum(guessGeneration.getText()) != Guess.FOUND)submitGuess.evaluateGeneration(guess.getGeneration(),stringToEnum(guessGeneration.getText()));
@@ -349,13 +353,10 @@ public class GamePanel extends JPanel {
             if(stringToEnum(guessType2.getText()) != Guess.FOUND)submitGuess.evaluateType2(guess.getType2(),stringToEnum(guessType2.getText()));
             if(stringToEnum(guessWeight.getText()) != Guess.FOUND)submitGuess.evaluateWeight(guess.getWeight(),stringToEnum(guessWeight.getText()));
             if(stringToEnum(guessHeight.getText()) != Guess.FOUND)submitGuess.evaluateHeight(guess.getHeight(),stringToEnum(guessHeight.getText()));
-            guess = submitGuess.getRandomPokemon();
-            turn++;
-            updateGame();
-            console.append("\n");
-            writeToConsole(guess);
+            parentApp.dexSet(submitGuess.getDex());
+            parentApp.switchCard("guessCard");
+            //updateGame();
 
-            System.out.println(submitGuess.progress() + "possible guesses");
 
 
 
@@ -386,7 +387,9 @@ public class GamePanel extends JPanel {
             default -> Guess.FOUND;
         };
     }
-    private void updateGame(){
+    public void updateGame(Pokemon newGuess){
+        guess = newGuess;
+
         int mask = submitGuess.getMask();
         if((mask & 0b10000) != 0){
             //if correct answer was found
@@ -439,11 +442,16 @@ public class GamePanel extends JPanel {
             guessHeight.setText("CLICK");
         }
 
+        turn++;
         turnLabel.setText("Turn " + turn);
         guessLabel.setText(guess.getName());
 
 
         pokemonPicture.setIcon(getPokemonIcon(guess.getName()));
+
+        console.append("\n");
+        writeToConsole(guess);
+        System.out.println(submitGuess.progress() + "possible guesses");
 
     }
 
