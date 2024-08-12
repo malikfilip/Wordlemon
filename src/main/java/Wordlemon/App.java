@@ -33,6 +33,14 @@ public class App extends JFrame {
         }
     }
 
+    public static ImageIcon getPokemonIcon(String name, int resX,int resY){
+        //System.out.println("src/main/resources/pokeicons/" + name.toUpperCase() + ".png");
+        ImageIcon bigIcon = new ImageIcon("src/main/resources/pokeicons/" + name.toUpperCase() + ".png");
+        Image content = bigIcon.getImage();
+        Image scaledImage = content.getScaledInstance(resX,resY,Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImage);
+    }
+
     public static List<Pokemon> getPokedex(){
         return pokedex;
     }
@@ -65,7 +73,7 @@ public class App extends JFrame {
         cLayout = new CardLayout();
         appPanel = new JPanel(cLayout);
 
-        wordleGuess();
+        activeGuess = wordleGuess();
         welcomePage = new WelcomePanel(this);
         gamePage = new GamePanel(this);
         guessPage = new GuessPanel(this);
@@ -94,16 +102,19 @@ public class App extends JFrame {
             ,poke.getHeight(),poke.getWeight());
         }
     }
-    public void wordleGuess(){
+    public Pokemon wordleGuess(){
         if(pokedex.isEmpty()){
             System.out.println("No pokemon matches that criteria");
             System.exit(-1);
         }
         int guessId = (int)(Math.random() * pokedex.size());
-        activeGuess = pokedex.get(guessId);
+        return pokedex.get(guessId);
     }
     public Pokemon getGuess(){
         return activeGuess;
+    }
+    public void setGuess(Pokemon guess){
+        activeGuess = guess;
     }
 
     public void gameUpdateWrapper (){
@@ -112,3 +123,4 @@ public class App extends JFrame {
 
 
 }
+

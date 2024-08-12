@@ -19,7 +19,7 @@ public class GamePanel extends JPanel {
     private Pokemon guess;
     private ImageIcon guessIcon;
     private Submit submitGuess;
-    private int turn = 0;
+    private int turn = 1;
     private String consoleText;
     //Game header
     JPanel topPanel = new JPanel(new GridLayout(1,2));
@@ -48,7 +48,7 @@ public class GamePanel extends JPanel {
 
         guess = parentApp.getGuess();
         submitGuess = new Submit();
-        guessIcon = getPokemonIcon(guess.getName());
+        guessIcon = App.getPokemonIcon(guess.getName(),64,64);
 
         //GUI
 
@@ -101,13 +101,7 @@ public class GamePanel extends JPanel {
 
 
     }
-    private ImageIcon getPokemonIcon(String name){
-        //System.out.println("src/main/resources/pokeicons/" + name.toUpperCase() + ".png");
-        ImageIcon bigIcon = new ImageIcon("src/main/resources/pokeicons/" + name.toUpperCase() + ".png");
-        Image content = bigIcon.getImage();
-        Image scaledImage = content.getScaledInstance(64,64,Image.SCALE_SMOOTH);
-        return new ImageIcon(scaledImage);
-    }
+
     private void guessInit(){
         foundIcon = new ImageIcon("src/main/resources/common/guessFound.png");
         correctIcon = new ImageIcon("src/main/resources/common/guessCorrect.png");
@@ -447,7 +441,7 @@ public class GamePanel extends JPanel {
         guessLabel.setText(guess.getName());
 
 
-        pokemonPicture.setIcon(getPokemonIcon(guess.getName()));
+        pokemonPicture.setIcon(App.getPokemonIcon(guess.getName(),64,64));
 
         console.append("\n");
         writeToConsole(guess);
