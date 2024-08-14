@@ -1,5 +1,6 @@
 package Panels;
 
+import Utils.ListPopup;
 import Wordlemon.App;
 import Wordlemon.Pokemon;
 
@@ -22,6 +23,11 @@ public class GuessPanel extends JPanel {
 
 
         gridInit();
+
+        listButton.addActionListener(al->{
+            listButton.setEnabled(false);
+            ListPopup list = new ListPopup(listButton);
+        });
 
         newButton.addActionListener(al->{
             guessPokemon = parentApp.wordleGuess();
@@ -46,6 +52,9 @@ public class GuessPanel extends JPanel {
                 guessPokemon = parentApp.wordleGuess();
                 guessIcon = App.getPokemonIcon(guessPokemon.getName(),256,256);
                 pokemon.setIcon(guessIcon);
+
+                title.setText(guessPokemon.getName());
+
                 listButton.setText(parentApp.dexSize() + " POKEMON AVAILABLE");
             }
         });
@@ -55,31 +64,48 @@ public class GuessPanel extends JPanel {
 
         pokemon = new JLabel();
 
+        title = new JLabel();
+        title.setFont(new Font("Drip October",Font.PLAIN,30));
+        title.setForeground(Color.CYAN);
+
         JPanel gridPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        gridPanel.add(pokemon,gbc);
+        gridPanel.add(title,gbc);
+
         gbc.gridx = 0;
         gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gridPanel.add(pokemon,gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         gbc.gridwidth = 1;
         okButton = new JButton("OK");
         okButton.setPreferredSize(new Dimension(100,100));
+        okButton.setBackground(Color.YELLOW);
         gridPanel.add(okButton,gbc);
         gbc.gridx = 1;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.LINE_END;
         newButton = new JButton("NEW");
         newButton.setPreferredSize(new Dimension(100,100));
+        newButton.setBackground(Color.YELLOW);
         gridPanel.add(newButton,gbc);
         listButton = new JButton();
+        listButton.setBackground(Color.BLUE);
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(20,0,0,0);
         gbc.anchor = GridBagConstraints.CENTER;
         gridPanel.add(listButton,gbc);
         this.add(gridPanel);
+
+
+
+
     }
 }
