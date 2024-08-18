@@ -23,6 +23,7 @@ public class GamePanel extends JPanel {
     private Submit submitGuess;
     private int turn = 1;
     private String consoleText;
+
     //Game header
     JPanel topPanel = new JPanel(new GridLayout(1,2));
     JPanel turnPanel = new JPanel(new GridBagLayout());
@@ -38,6 +39,7 @@ public class GamePanel extends JPanel {
     ImageIcon correctIcon,wrongIcon,foundIcon,higherIcon,lowerIcon;
     JPanel buttonsPanel = new JPanel(new GridBagLayout());
     JButton submitButton, copyButton, exitButton;
+
     //GameConsole
     JPanel botPanel = new JPanel(new BorderLayout());
     JTabbedPane consolePane = new JTabbedPane();
@@ -56,6 +58,7 @@ public class GamePanel extends JPanel {
         this.add(topPanel,BorderLayout.NORTH);
         this.add(midPanel,BorderLayout.CENTER);
         this.add(botPanel,BorderLayout.SOUTH);
+
         //Top panel
         turnPanel.setBackground(new Color(71,188,201));
         guessPanel.setBackground(new Color(71,188,201));
@@ -64,11 +67,13 @@ public class GamePanel extends JPanel {
 
         topPanel.setPreferredSize(new Dimension(topPanel.getWidth(),70));
         botPanel.setPreferredSize(new Dimension(botPanel.getWidth(),100));
+
         //-Turn panel
         turnLabel.setText("Turn " + turn);
         turnLabel.setFont(new Font("Drip October",Font.PLAIN,20));
         turnPanel.add(turnLabel);
-        //-Guess panel
+
+        //-Guess panel[header]
         guessLabel.setText(guess.getName());
         guessLabel.setFont(new Font("Drip October",Font.PLAIN,15));
         guessPanel.add(guessLabel);
@@ -203,8 +208,6 @@ public class GamePanel extends JPanel {
         writeToConsole(guess);
 
         consolePane.add("Console",scroll);
-
-
 
     }
 
@@ -345,22 +348,22 @@ public class GamePanel extends JPanel {
     private void createButtonActions(App parentApp){
         submitButton.addActionListener(al->{
 
-            /*System.out.println("Generation " + guessGeneration.getText() + " Type 1 " + guessType1.getText() + " Type 2 " + guessType2.getText()
-               +" Weight " + guessWeight.getText() + " Height " + guessHeight.getText());*/
             if(stringToEnum(guessGeneration.getText()) != Guess.FOUND)submitGuess.evaluateGeneration(guess.getGeneration(),stringToEnum(guessGeneration.getText()));
             if(stringToEnum(guessType1.getText()) != Guess.FOUND)submitGuess.evaluateType1(guess.getType1(),stringToEnum(guessType1.getText()));
             if(stringToEnum(guessType2.getText()) != Guess.FOUND)submitGuess.evaluateType2(guess.getType2(),stringToEnum(guessType2.getText()));
             if(stringToEnum(guessWeight.getText()) != Guess.FOUND)submitGuess.evaluateWeight(guess.getWeight(),stringToEnum(guessWeight.getText()));
             if(stringToEnum(guessHeight.getText()) != Guess.FOUND)submitGuess.evaluateHeight(guess.getHeight(),stringToEnum(guessHeight.getText()));
+
             parentApp.dexSet(submitGuess.getDex());
             parentApp.setGuess(parentApp.wordleGuess());
             parentApp.switchCard("guessCard");
-            //updateGame();
 
         });
+
         exitButton.addActionListener(al->{
             System.exit(0);
         });
+
         copyButton.addActionListener(al->{
             StringSelection selectedName = new StringSelection(guess.getName());
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -445,11 +448,11 @@ public class GamePanel extends JPanel {
         turnLabel.setText("Turn " + turn);
         guessLabel.setText(guess.getName());
 
-
         pokemonPicture.setIcon(App.getPokemonIcon(guess.getName(),64,64));
 
         console.append("\n");
         writeToConsole(guess);
+
         copyButton.setText("Copy name");
 
     }

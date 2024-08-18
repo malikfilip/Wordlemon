@@ -24,10 +24,8 @@ public class WelcomePanel extends JPanel {
            @Override
            public void actionPerformed(ActionEvent e) {
                 parentApp.switchCard("gameCard");
-
            }
        });
-
 
    }
     @Override

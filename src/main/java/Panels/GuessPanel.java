@@ -21,7 +21,6 @@ public class GuessPanel extends JPanel {
 
     public GuessPanel (App parentApp){
 
-
         gridInit();
 
         listButton.addActionListener(al->{
@@ -63,15 +62,17 @@ public class GuessPanel extends JPanel {
     private void gridInit(){
 
         pokemon = new JLabel();
-
         title = new JLabel();
+        JPanel gridPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        this.setBackground(new Color(149,52,235));
+
+
         title.setFont(new Font("Drip October",Font.PLAIN,30));
         title.setForeground(Color.CYAN);
 
-        JPanel gridPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        this.setBackground(new Color(149,52,235));
-
+        //Setting up the gridbagslayout.
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -81,6 +82,7 @@ public class GuessPanel extends JPanel {
         gbc.gridy = 1;
         gbc.gridwidth = 2;
         gridPanel.add(pokemon,gbc);
+
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
@@ -89,6 +91,7 @@ public class GuessPanel extends JPanel {
         okButton.setBackground(Color.BLUE);
         okButton.setForeground(Color.WHITE);
         gridPanel.add(okButton,gbc);
+
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.LINE_END;
@@ -97,6 +100,7 @@ public class GuessPanel extends JPanel {
         newButton.setBackground(Color.BLUE);
         newButton.setForeground(Color.white);
         gridPanel.add(newButton,gbc);
+
         listButton = new JButton();
         listButton.setBackground(Color.YELLOW);
         gbc.gridx = 0;
@@ -105,11 +109,9 @@ public class GuessPanel extends JPanel {
         gbc.insets = new Insets(20,0,0,0);
         gbc.anchor = GridBagConstraints.CENTER;
         gridPanel.add(listButton,gbc);
+        //------------------------------------------------------
+
         this.add(gridPanel);
-        gridPanel.setBackground(null);
-
-
-
 
     }
 

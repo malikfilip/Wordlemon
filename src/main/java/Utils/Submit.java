@@ -16,22 +16,21 @@ public class Submit {
     private String correctType1,correctType2;
 
     public Submit(){
-
         guessList = App.getPokedex();
     }
 
-    public void evaluateGeneration(int guessedGenertion, Guess guessInfo){
+    public void evaluateGeneration(int guessedGeneration, Guess guessInfo){
         switch (guessInfo){
             case CORRECT:
                 guessMask |= 0b10000;
-                correctGeneration = guessedGenertion;
-                guessList.removeIf(mon -> mon.getGeneration() != guessedGenertion);
+                correctGeneration = guessedGeneration;
+                guessList.removeIf(mon -> mon.getGeneration() != guessedGeneration);
                 break;
             case HIGHER:
-                guessList.removeIf(mon -> mon.getGeneration() <= guessedGenertion);
+                guessList.removeIf(mon -> mon.getGeneration() <= guessedGeneration);
                 break;
             case LOWER:
-                guessList.removeIf(mon -> mon.getGeneration() >= guessedGenertion);
+                guessList.removeIf(mon -> mon.getGeneration() >= guessedGeneration);
                 break;
         }
     }
@@ -90,14 +89,6 @@ public class Submit {
                 break;
         }
     }
-    /*public Pokemon getRandomPokemon(){
-        if(guessList.isEmpty()) {
-            System.out.println("That pokemon does not exist in the pokedex.");
-            System.exit(-1);
-        }
-        int guessId = (int)(Math.random() * guessList.size());
-        return guessList.get(guessId);
-    }*/
 
     public List<Pokemon> getDex (){
         return this.guessList;

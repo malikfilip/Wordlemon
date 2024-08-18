@@ -17,6 +17,7 @@ import java.util.List;
 public class App extends JFrame {
     private static List<Pokemon> pokedex = new ArrayList<Pokemon>();
 
+    //Parsing JSONs to List<Pokemon> for commodities during development.
     private static void createDex(File[] files) {
         ObjectMapper objMapper = new ObjectMapper();
         if(files != null) {
@@ -34,7 +35,6 @@ public class App extends JFrame {
     }
 
     public static ImageIcon getPokemonIcon(String name, int resX,int resY){
-        //System.out.println("src/main/resources/pokeicons/" + name.toUpperCase() + ".png");
         ImageIcon bigIcon = new ImageIcon("src/main/resources/pokeicons/" + name.toUpperCase() + ".png");
         Image content = bigIcon.getImage();
         Image scaledImage = content.getScaledInstance(resX,resY,Image.SCALE_SMOOTH);
@@ -50,6 +50,8 @@ public class App extends JFrame {
         File[] files = directory.listFiles();
         createDex(files);
     }
+    //----------------------------
+
     private Pokemon activeGuess;
 
     private Font appFont;
@@ -80,6 +82,7 @@ public class App extends JFrame {
         welcomePage = new WelcomePanel(this);
         gamePage = new GamePanel(this);
         guessPage = new GuessPanel(this);
+
         appPanel.add(welcomePage,"welcomeCard");
         appPanel.add(gamePage,"gameCard");
         appPanel.add(guessPage,"guessCard");
@@ -105,6 +108,7 @@ public class App extends JFrame {
             ,poke.getHeight(),poke.getWeight());
         }
     }
+    //Maybe implement searching alg but im too lazy rn.
     public Pokemon wordleGuess(){
         if(pokedex.isEmpty()){
             JOptionPane.showMessageDialog(null,"No pokemon matches that criteria !");
@@ -113,6 +117,7 @@ public class App extends JFrame {
         int guessId = (int)(Math.random() * pokedex.size());
         return pokedex.get(guessId);
     }
+    //-----------------------------------------------------
     public Pokemon getGuess(){
         return activeGuess;
     }
@@ -120,6 +125,8 @@ public class App extends JFrame {
         activeGuess = guess;
     }
 
+    //Connection between card panels using main app as an enabler.
+    //Meant to be used from guess panel in order to update game panel.
     public void gameUpdateWrapper (){
         gamePage.updateGame(activeGuess);
     }

@@ -15,14 +15,17 @@ public class ListPopup extends JFrame {
 
     private String [] columns = {"Name","Gen","Type 1","Type 2", "Height", "Weight"};
     JTable listOfGuesses = new JTable(pokemonParse(),columns);
-   //List<Pokemon> newDex
+
     public ListPopup(JButton button){
+
         this.setTitle("Pokemon left");
         this.setSize(500,500);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.setBackground(Color.RED);
+
         JScrollPane table = new JScrollPane(listOfGuesses);
+
         this.add(table);
         this.setVisible(true);
 
@@ -33,7 +36,7 @@ public class ListPopup extends JFrame {
             }
         });
     }
-
+//JTable sux ass tbh :disgusting:
     Object[][] pokemonParse(){
         Object[][] parsedDex = new Object[App.getPokedex().size()][6];
         for(int i = 0; i<App.getPokedex().size();i++){
@@ -44,7 +47,6 @@ public class ListPopup extends JFrame {
             parsedDex[i][3]=(Objects.equals(poke.getType2(), "")) ? "NONE" : poke.getType2() ;
             parsedDex[i][4]=poke.getWeight() + " m";
             parsedDex[i][5]=poke.getHeight() + " kg";
-
         }
     return parsedDex;
     }
