@@ -49,7 +49,7 @@ public class GuessPanel extends JPanel {
 
             @Override
             public void componentShown(ComponentEvent e) {
-                guessPokemon = parentApp.wordleGuess();
+                guessPokemon = parentApp.getGuess();
                 guessIcon = App.getPokemonIcon(guessPokemon.getName(),256,256);
                 pokemon.setIcon(guessIcon);
 
@@ -70,6 +70,7 @@ public class GuessPanel extends JPanel {
 
         JPanel gridPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+        this.setBackground(new Color(149,52,235));
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -85,17 +86,19 @@ public class GuessPanel extends JPanel {
         gbc.gridwidth = 1;
         okButton = new JButton("OK");
         okButton.setPreferredSize(new Dimension(100,100));
-        okButton.setBackground(Color.YELLOW);
+        okButton.setBackground(Color.BLUE);
+        okButton.setForeground(Color.WHITE);
         gridPanel.add(okButton,gbc);
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.LINE_END;
         newButton = new JButton("NEW");
         newButton.setPreferredSize(new Dimension(100,100));
-        newButton.setBackground(Color.YELLOW);
+        newButton.setBackground(Color.BLUE);
+        newButton.setForeground(Color.white);
         gridPanel.add(newButton,gbc);
         listButton = new JButton();
-        listButton.setBackground(Color.BLUE);
+        listButton.setBackground(Color.YELLOW);
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
@@ -103,9 +106,11 @@ public class GuessPanel extends JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
         gridPanel.add(listButton,gbc);
         this.add(gridPanel);
+        gridPanel.setBackground(null);
 
 
 
 
     }
+
 }

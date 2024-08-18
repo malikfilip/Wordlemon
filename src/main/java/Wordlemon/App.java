@@ -60,9 +60,12 @@ public class App extends JFrame {
     private WelcomePanel welcomePage;
     private GuessPanel guessPage;
 
+    private ImageIcon logo = new ImageIcon("src/main/resources/logowordlemon.png");
+
     App(){
 
         this.setTitle("Wordlemon");
+        this.setIconImage(logo.getImage());
         this.setSize(500,500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
@@ -104,7 +107,7 @@ public class App extends JFrame {
     }
     public Pokemon wordleGuess(){
         if(pokedex.isEmpty()){
-            System.out.println("No pokemon matches that criteria");
+            JOptionPane.showMessageDialog(null,"No pokemon matches that criteria !");
             System.exit(-1);
         }
         int guessId = (int)(Math.random() * pokedex.size());

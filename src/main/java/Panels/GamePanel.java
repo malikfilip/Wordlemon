@@ -8,6 +8,8 @@ import Wordlemon.Pokemon;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
@@ -35,14 +37,12 @@ public class GamePanel extends JPanel {
     JLabel generationTitle,type1Title,type2Title,heightTitle,weightTitle;
     ImageIcon correctIcon,wrongIcon,foundIcon,higherIcon,lowerIcon;
     JPanel buttonsPanel = new JPanel(new GridBagLayout());
-    JButton submitButton, restartButton, exitButton;
+    JButton submitButton, copyButton, exitButton;
     //GameConsole
     JPanel botPanel = new JPanel(new BorderLayout());
     JTabbedPane consolePane = new JTabbedPane();
     JTextArea console;
     JScrollPane scroll;
-
-
 
     public GamePanel(App parentApp){
 
@@ -57,8 +57,10 @@ public class GamePanel extends JPanel {
         this.add(midPanel,BorderLayout.CENTER);
         this.add(botPanel,BorderLayout.SOUTH);
         //Top panel
-        topPanel.setBackground(Color.CYAN);
-        guessPanel.setBackground(Color.RED);
+        turnPanel.setBackground(new Color(71,188,201));
+        guessPanel.setBackground(new Color(71,188,201));
+        topPanel.setBorder(BorderFactory.createLoweredBevelBorder());
+        guessPanel.setBorder(BorderFactory.createMatteBorder(0,5,0,0,Color.BLACK));
 
         topPanel.setPreferredSize(new Dimension(topPanel.getWidth(),70));
         botPanel.setPreferredSize(new Dimension(botPanel.getWidth(),100));
@@ -92,9 +94,13 @@ public class GamePanel extends JPanel {
 
         midPanel.add(buttonsPanel);
 
+        midPanel.setBackground(new Color(165,202,207));
+        buttonsPanel.setBackground(new Color(165,202,207));
+
         //Bottom panel
         consoleInit();
         botPanel.add(consolePane);
+        botPanel.setBackground(new Color(165,202,207));
 
         createIconActions();
         createButtonActions(parentApp);
@@ -160,12 +166,12 @@ public class GamePanel extends JPanel {
         submitButton.setFocusable(false);
 
 
-        restartButton = new JButton("Reset");
-        restartButton.setPreferredSize(new Dimension(100,100));
-        restartButton.setBorder(BorderFactory.createRaisedBevelBorder());
-        restartButton.setForeground(Color.white);
-        restartButton.setBackground(Color.darkGray);
-        restartButton.setFocusable(false);
+        copyButton = new JButton("Copy name");
+        copyButton.setPreferredSize(new Dimension(100,100));
+        copyButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        copyButton.setForeground(Color.white);
+        copyButton.setBackground(Color.darkGray);
+        copyButton.setFocusable(false);
 
         exitButton = new JButton("Exit");
         exitButton.setPreferredSize(new Dimension(100,100));
@@ -181,7 +187,7 @@ public class GamePanel extends JPanel {
         buttonsPanel.add(Box.createHorizontalStrut(30));
         buttonsPanel.add(submitButton);
         buttonsPanel.add(Box.createHorizontalStrut(30));
-        buttonsPanel.add(restartButton);
+        buttonsPanel.add(copyButton);
     }
 
     private void consoleInit(){
@@ -195,7 +201,6 @@ public class GamePanel extends JPanel {
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         //scroll.getVerticalScrollBar().setValue(scroll.getVerticalScrollBar().getMaximum());
         writeToConsole(guess);
-
 
         consolePane.add("Console",scroll);
 
@@ -348,19 +353,19 @@ public class GamePanel extends JPanel {
             if(stringToEnum(guessWeight.getText()) != Guess.FOUND)submitGuess.evaluateWeight(guess.getWeight(),stringToEnum(guessWeight.getText()));
             if(stringToEnum(guessHeight.getText()) != Guess.FOUND)submitGuess.evaluateHeight(guess.getHeight(),stringToEnum(guessHeight.getText()));
             parentApp.dexSet(submitGuess.getDex());
+            parentApp.setGuess(parentApp.wordleGuess());
             parentApp.switchCard("guessCard");
             //updateGame();
-
-
-
-
 
         });
         exitButton.addActionListener(al->{
             System.exit(0);
         });
-        restartButton.addActionListener(al->{
-            parentApp.switchCard("welcomeCard");
+        copyButton.addActionListener(al->{
+            StringSelection selectedName = new StringSelection(guess.getName());
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selectedName,null);
+            copyButton.setText("Copied !");
         });
     }
     private void writeToConsole (Pokemon refPokemon){
@@ -445,8 +450,14 @@ public class GamePanel extends JPanel {
 
         console.append("\n");
         writeToConsole(guess);
-        System.out.println(submitGuess.progress() + "possible guesses");
+        copyButton.setText("Copy name");
 
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Image img = new ImageIcon("src/main/resources/homepage.png").getImage();
+        g.drawImage(img,0,0,null );
     }
 
 }

@@ -20,6 +20,5 @@ public class Main {
         final File fontFile = new File("src/main/resources/font.ttf");
         Font customFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
         GE.registerFont(customFont);
-        System.out.println(customFont.getFontName());
     }
 }
