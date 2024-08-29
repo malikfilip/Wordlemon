@@ -125,7 +125,7 @@ public class App extends JFrame {
         activeGuess = guess;
     }
 
-    //Connection between card panels using main app as an enabler.
+    //Link between card panels using main app as an enabler.
     //Meant to be used from guess panel in order to update game panel.
     public void gameUpdateWrapper (){
         gamePage.updateGame(activeGuess);

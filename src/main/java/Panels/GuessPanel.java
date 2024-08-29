@@ -31,6 +31,7 @@ public class GuessPanel extends JPanel {
         newButton.addActionListener(al->{
             guessPokemon = parentApp.wordleGuess();
             guessIcon = App.getPokemonIcon(guessPokemon.getName(),256,256);
+            title.setText(guessPokemon.getName());
             pokemon.setIcon(guessIcon);
         });
 
@@ -67,6 +68,7 @@ public class GuessPanel extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
 
         this.setBackground(new Color(149,52,235));
+        gridPanel.setBackground(new Color(149,52,235));
 
 
         title.setFont(new Font("Drip October",Font.PLAIN,30));
