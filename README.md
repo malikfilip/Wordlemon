@@ -1,5 +1,5 @@
-![logowordlemon]()
-<img src="[https://github.com/favicon.ico](https://github.com/user-attachments/assets/f83dfb6c-defe-4674-9dbe-441460383da9)" width="360">
+<p align="center"><img src="https://i.nuuls.com/5F00z.png" width="360" alt="Wordlemon logo"></p>
+
 # Introduction to Wordlemon
 
 Wordlemon is an app made in order to help pixelmon players solve their wordle requests using software instead of their brains. This app designed is primarily focused on [PokeWordle](https://www.curseforge.com/minecraft/mc-mods/pokewordle) mode that is being used inside [minecraft pixelmon](https://www.curseforge.com/minecraft/mc-mods/pixelmon) servers.
