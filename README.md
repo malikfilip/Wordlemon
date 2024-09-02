@@ -10,7 +10,7 @@ This version of the project is tied to information that is provided within versi
 #### Note
 Avoid using this in wordles that are not associated with Pixelmon, since the information about Pokemon inside different games are most likely not the same as they are in this project.
 ## Usage
-**Demo video** //soon -> [Youtube](https://www.youtube.com/)
+**Demo video** -> [Youtube](https://youtu.be/q288QZFf62E)
 ## What i've learnt doing this project
 * Used **_Java Swing_** widget toolkit for the utilization of the project's GUI accompanied with AWT.
 * First encounter with **_Jackson_** JSON processing library.
